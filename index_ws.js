@@ -9,28 +9,28 @@ var books = [];
 
 var book1 = {
 	bookName : 'Harry Potter',
-	rate : '5',
+	rate : 2,
 	pages : 300,
 	bookType : 'drama',
 	author : 'Naftali_Gadassi'
 }
 var book2 = {
 	bookName : 'Batman',
-	rate : '2',
+	rate : 5,
 	pages : 400,
 	bookType : 'fantazy',
 	author : 'Roni_Chabra'
 }
 var book3 = {
 	bookName : 'Superman',
-	rate : '3',
+	rate : 3,
 	pages : 200,
 	bookType : 'comedy',
 	author : 'Tomas_Luster'
 }
 var book4 = {
 	bookName : 'Spiderman',
-	rate : '4',
+	rate : 4,
 	pages : 220,
 	bookType : 'drama',
 	author : 'Rotem_Barzilay'
@@ -43,6 +43,10 @@ books[2] = bookStore.Book(book3);
 books[3] = bookStore.Book(book4);
 
 
+//get the best rates
+function getBestRate(){
+	return bookStore.getBestRate();
+}
 //get Longest Book
 function checkLongestBook(){
 	return bookStore.getLongestBook(books);
@@ -51,11 +55,6 @@ function checkLongestBook(){
 function searchByBookType(book_type){
 	return bookStore.getBooksByType(book_type,books);
 }
-//get the best rates
-function getBestRate(){
-	return bookStore.getBestRate();
-}
-
 app.get('/',function (req,res){ 
 	res.sendFile(__dirname + '/index.html');
 });
@@ -78,11 +77,11 @@ app.get('/find',function (req,res){
 
 app.get('/rate',function (req,res){ 
 	var rate = getBestRate();
-	console.log("the best rate book is: " + rate);
+	console.log("the best rate book is: " + rate.bookName);
 	app.set('json space',4);
-	res.json(lb);
+	res.json(rate);
 });
 
 app.listen(port);
-console.log("listening on port 8080");
-console.log("please type: /find?field=x or /longest in the browser url");
+console.log("listening on port " + port + "\n");
+console.log("\nplease type: \n1.url/longest \n2.url/rate \n3.url/find?field=bookType\nin the browser url\n");

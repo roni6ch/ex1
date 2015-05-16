@@ -2,14 +2,15 @@ var events = require('events');
 var util = require('util');
 util.inherits(newBook,events.EventEmitter);
 
+var books = [];
+var index = 0;
+
 exports.Book = function(info){
 	var book = new newBook();
 	book.setAllInfo(info);
+	books[index] = info;
+	index++;
 	return book;
-}
-
-exports.getLoger = function(){
-	return loger;
 }
 
 // Book Object Constructor
@@ -35,7 +36,23 @@ function newBook() {
 	events.EventEmitter.call(this);
 };
 
+
 // Book Object prototypes
+exports.getBestRate = function() {
+	var bestRate = -1;
+	var bestBookRate = -1;
+	for (var i in books){
+		if (books[i].rate > bestRate)
+		{
+			bestRate = books[i].rate;
+			bestBookRate = books[i];
+		}
+	}
+	if (bestBookRate!=-1)
+		return bestBookRate;
+	else return false;
+}
+
 exports.getLongestBook = function(books) {
 	var longestBook = 0;
 	for (var i in books){
