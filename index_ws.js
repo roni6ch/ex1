@@ -5,9 +5,10 @@ var app = express();
 var port = process.env.PORT || 8080;
 
 
-var books = [];
+//var books = [];
 
 var book1 = {
+	id : 1,
 	bookName : 'Harry Potter',
 	rate : 2,
 	pages : 300,
@@ -15,6 +16,7 @@ var book1 = {
 	author : 'Naftali_Gadassi'
 }
 var book2 = {
+	id : 2,
 	bookName : 'Batman',
 	rate : 5,
 	pages : 400,
@@ -22,6 +24,7 @@ var book2 = {
 	author : 'Roni_Chabra'
 }
 var book3 = {
+	id : 3,
 	bookName : 'Superman',
 	rate : 3,
 	pages : 200,
@@ -29,6 +32,7 @@ var book3 = {
 	author : 'Tomas_Luster'
 }
 var book4 = {
+	id : 4,
 	bookName : 'Spiderman',
 	rate : 4,
 	pages : 220,
@@ -37,24 +41,34 @@ var book4 = {
 }
 
 //add all the books to array
-books[0] = bookStore.Book(book1);
-books[1] = bookStore.Book(book2);
-books[2] = bookStore.Book(book3);
-books[3] = bookStore.Book(book4);
+bookStore.Book(book1);
+bookStore.Book(book2);
+bookStore.Book(book3);
+bookStore.Book(book4);
 
 
 //get the best rates
 function getBestRate(){
 	return bookStore.getBestRate();
 }
+//get book by id
+function getBookById(id){
+	return bookStore.getBookById(id);
+}
 //get Longest Book
 function checkLongestBook(){
-	return bookStore.getLongestBook(books);
+	return bookStore.getLongestBook();
 }
 //search names by book type()
 function searchByBookType(book_type){
-	return bookStore.getBooksByType(book_type,books);
+	return bookStore.getBooksByType(book_type);
 }
+//get all book list from library
+function getBookList(){
+	return bookStore.getBookList();
+}
+
+//the url routes
 app.get('/',function (req,res){ 
 	res.sendFile(__dirname + '/index.html');
 });
@@ -66,6 +80,11 @@ app.get('/longest',function (req,res){
 	res.json(lb);
 });
 
+app.get('/list',function (req,res){ 
+	app.set('json space',4);
+	res.json(getBookList());
+});
+
 app.get('/find',function (req,res){
 	var urlPart = url.parse(req.url,true);
 	var query = urlPart.query;
@@ -73,6 +92,14 @@ app.get('/find',function (req,res){
 	console.log("book/s with type " + query.book_type + ": " + bt);
 	app.set('json space',4);
 	res.json(bt);
+});
+
+app.get('/id/:book_id',function (req,res){
+	var bookId = req.params.book_id;
+	console.log("book id is: " + bookId);
+	var book_by_id = getBookById(bookId);
+	app.set('json space',4);
+	res.json(book_by_id);
 });
 
 app.get('/rate',function (req,res){ 

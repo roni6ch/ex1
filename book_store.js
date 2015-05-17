@@ -16,6 +16,7 @@ exports.Book = function(info){
 // Book Object Constructor
 function newBook() {
 	this.data = {
+		id : null,
 		bookName : null,
 		rate : null,
 		pages : null,
@@ -53,24 +54,52 @@ exports.getBestRate = function() {
 	else return false;
 }
 
-exports.getLongestBook = function(books) {
-	var longestBook = 0;
+exports.getLongestBook = function() {
+	var bookLength = 0;
+	var longestBook = -1;
 	for (var i in books){
-		if (books[i].data.pages > longestBook)
-			longestBook = books[i].data.pages;
+		if (books[i].pages > bookLength)
+		{
+			bookLength = books[i].pages;
+			longestBook = books[i];
+		}
 	}
-	return books[i].data;
+	return longestBook;
 }
 
-exports.getBooksByType = function(book_type,books) {
+exports.getBooksByType = function(book_type) {
 	var booksByType = [];
 	var j = 0;
 	for (var i in books){
-		if (books[i].data.bookType == book_type)
+		if (books[i].bookType == book_type)
 		{
-			booksByType[j] = books[i].data.bookName;
+			booksByType[j] = books[i].bookName;
 			j++;
 		}
 	}
 	return booksByType;
+}
+
+exports.getBookList = function() {
+	for (var i in books){
+		console.log(books[i]);
+	}
+	return books;
+}
+exports.getBookById = function(id) {
+	var book_by_id = null;
+	for (var i in books){
+		if (books[i].id == id)
+		{
+			console.log(books[i].bookName);
+			book_by_id = books[i];
+		}
+	}
+	if ( book_by_id != null )
+	{
+		console.log(book_by_id);
+		return book_by_id;
+	}
+	else
+		return "no such book";
 }
